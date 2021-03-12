@@ -17,6 +17,7 @@ version = "*"
 features = [
     "CanvasRenderingContext2d",
     "Document",
+    "DomRect",
     "Element",
     "HtmlCanvasElement",
     "MouseEvent",

@@ -36,15 +36,17 @@ pub fn main() {
     const WIDTH: u32 = 400;
     const HEIGHT: u32 = 200;
 
-    let canvas = create_canvas(WIDTH, HEIGHT);
-
+    let canvas = Rc::new(create_canvas(WIDTH, HEIGHT));
     let mouse_state = Rc::new(Cell::new(MouseState::default()));
+
     {
+        let canvas = Rc::clone(&canvas);
         let mouse_state = Rc::clone(&mouse_state);
         let f = Closure::wrap(Box::new(move |e: MouseEvent| {
+            let rect = canvas.get_bounding_client_rect();
             let current = MouseState {
-                x: e.client_x(),
-                y: e.client_y(),
+                x: e.client_x() - rect.left() as i32,
+                y: e.client_y() - rect.top() as i32,
                 buttons: e.buttons(),
             };
             mouse_state.set(current);
@@ -52,7 +54,6 @@ pub fn main() {
 
         let window = window().unwrap();
         let document = window.document().unwrap();
-        // not canvas.
         document
             .add_event_listener_with_callback("mousemove", f.as_ref().unchecked_ref())
             .unwrap();

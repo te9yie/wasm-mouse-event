@@ -24,14 +24,14 @@ impl Rect {
 }
 
 pub struct App {
-    canvas: HtmlCanvasElement,
+    canvas: Rc<HtmlCanvasElement>,
     mouse_state: Rc<Cell<MouseState>>,
     rects: [Rect; 2],
     down: bool,
 }
 
 impl App {
-    pub fn new(canvas: HtmlCanvasElement, mouse_state: Rc<Cell<MouseState>>) -> Self {
+    pub fn new(canvas: Rc<HtmlCanvasElement>, mouse_state: Rc<Cell<MouseState>>) -> Self {
         let rects = [Rect::new(0.0, 0.0, 0.0), Rect::new(0.0, 0.0, 0.0)];
         Self {
             canvas,
